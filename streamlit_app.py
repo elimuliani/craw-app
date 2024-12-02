@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 # Load data
-df = pd.read_csv("pln_clean.csv") 1 
+df = pd.read_csv("pln_clean.csv") 
 
 # Fungsi untuk membuat plot berdasarkan kategori
 def plot_category(category):
