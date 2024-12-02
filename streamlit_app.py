@@ -17,7 +17,7 @@ def load_data():
             if col not in data.columns:
                 st.warning(f"Kolom '{col}' tidak ditemukan. Periksa file CSV Anda.")
         
-        # Normalisasi data (pastikan kolom 'Category' ada)
+        # Normalisasi data (pastikan kolom 'category' ada)
         if "category" in data.columns:
             data["category"] = data["category"].str.strip().str.lower()  # Normalisasi kategori
         else:
@@ -35,10 +35,10 @@ def load_data():
 
 # Fungsi untuk memfilter berita berdasarkan kategori
 def filter_by_category(data, category):
-    if "Category" not in data.columns:
-        st.warning("Kolom 'Category' tidak ditemukan dalam data.")
+    if "category" not in data.columns:
+        st.warning("Kolom 'category' tidak ditemukan dalam data.")
         return pd.DataFrame()
-    return data[data["Category"] == category.lower()]
+    return data[data["category"] == category.lower()]
 
 # Memuat data
 data = load_data()
@@ -65,8 +65,8 @@ for tab, category in zip(tabs, categories):
         else:
             # Menampilkan berita
             for _, row in category_data.iterrows():
-                st.markdown(f"### {row['Title']}")
-                st.markdown(f"**Tanggal**: {row['Date'].strftime('%Y-%m-%d %H:%M:%S')}" if pd.notnull(row["Date"]) else "Tanggal tidak tersedia")
-                st.markdown(f"**Link**: [Baca selengkapnya]({row['Link']})")
-                st.markdown(f"**Konten**: {row['Content'][:200]}...")
+                st.markdown(f"### {row['headline']}")
+                st.markdown(f"**Tanggal**: {row['date'].strftime('%Y-%m-%d %H:%M:%S')}" if pd.notnull(row["date"]) else "Tanggal tidak tersedia")
+                st.markdown(f"**Link**: [Baca selengkapnya]({row['link']})")
+                st.markdown(f"**Konten**: {row['content_text'][:200]}...")
                 st.markdown("---")
