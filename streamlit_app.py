@@ -6,7 +6,7 @@ import pandas as pd
 def load_data():
     try:
         # Membaca file CSV
-        data = pd.read_csv("pln_pestel_filtered.csv", encoding="utf-8")
+        data = pd.read_csv("pln_clean.csv", encoding="utf-8")
         
         # Debug: Periksa kolom yang ada di dataset
         st.write("Kolom dalam dataset:", data.columns.tolist())
