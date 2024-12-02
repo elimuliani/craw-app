@@ -18,10 +18,10 @@ def load_data():
                 st.warning(f"Kolom '{col}' tidak ditemukan. Periksa file CSV Anda.")
         
         # Normalisasi data (pastikan kolom 'Category' ada)
-        if "Category" in data.columns:
-            data["Category"] = data["Category"].str.strip().str.lower()  # Normalisasi kategori
+        if "category" in data.columns:
+            data["category"] = data["category"].str.strip().str.lower()  # Normalisasi kategori
         else:
-            st.error("Kolom 'Category' tidak ada dalam dataset.")
+            st.error("Kolom 'category' tidak ada dalam dataset.")
             st.stop()
 
         # Konversi tanggal jika ada kolom 'date'
