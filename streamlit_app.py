@@ -1,26 +1,53 @@
 import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
+
+# Fungsi untuk memuat data dari CSV
+@st.cache_data
+def load_data():
+    try:
+        # Ganti dengan lokasi file CSV Anda
+        data = pd.read_csv("pln_clean.csv", 
+                           names=["Title", "Date", "Link", "Content", "Category"],
+                           encoding="utf-8")
+        data["Date"] = pd.to_datetime(data["Date"])  # Konversi ke format datetime
+        return data
+    except Exception as e:
+        st.error(f"Error loading data: {e}")
+        return pd.DataFrame()
+
+# Fungsi untuk membuat kategori berita PESTEL
+def filter_by_category(data, category):
+    return data[data["Category"].str.lower() == category.lower()]
 
 # Load data
-df = pd.read_csv("pln_clean.csv") 
+data = load_data()
 
-# Fungsi untuk membuat plot berdasarkan kategori
-def plot_category(category):
-    st.write(f"## Kategori: {category}")
-    cols = [col for col in df.columns if category.lower() in col.lower()]
-    df_category = df[cols]
-    
-    # Contoh visualisasi: Histogram
-    for col in df_category.columns:
-        fig, ax = plt.subplots()
-        sns.histplot(data=df_category, x=col, kde=True)
-        st.pyplot(fig)
+# Judul Dashboard
+st.title("Dashboard Berita PESTEL Analysis")
+st.write("**Platform Analisis Berita Berdasarkan PESTEL Framework**")
+st.write("Menampilkan berita relevan berdasarkan kategori: **Political, Economic, Social, Technological, Environmental, Legal (PESTEL)**.")
 
-# Sidebar untuk memilih kategori
-st.sidebar.title("Pilih Kategori PESTEL")
-category = st.sidebar.selectbox("", ["Politik", "Ekonomi", "Sosial", "Teknologi", "Lingkungan", "Legal"])
+# Tab berdasarkan kategori PESTEL
+tabs = st.tabs(["Political", "Economic", "Social", "Technological", "Environmental", "Legal"])
 
-# Tampilkan plot berdasarkan pilihan
-plot_category(category)
+categories = ["Political", "Economic", "Social", "Technological", "Environmental", "Legal"]
+
+# Loop untuk membuat tab per kategori
+for tab, category in zip(tabs, categories):
+    with tab:
+        st.subheader(f"Kategori: {category}")
+        
+        # Filter berita berdasarkan kategori
+        category_data = filter_by_category(data, category)
+        
+        # Tampilkan pesan jika tidak ada data
+        if category_data.empty:
+            st.info(f"Tidak ada berita di kategori {category}.")
+        else:
+            # Loop untuk menampilkan berita
+            for index, row in category_data.iterrows():
+                st.markdown(f"### {row['Title']}")
+                st.markdown(f"**Tanggal**: {row['Date'].strftime('%Y-%m-%d %H:%M:%S')}")
+                st.markdown(f"**Link**: [Baca selengkapnya]({row['Link']})")
+                st.markdown(f"**Konten**: {row['Content'][:200]}...")  # Tampilkan cuplikan konten
+                st.markdown("---")  # Garis pemisah antar berita
