@@ -4,7 +4,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 # Membaca dataset yang sudah dibersihkan
-data = pd.read_csv('pln_cleaned.csv')
+data = pd.read_csv('pln_clean.csv')
 
 # Judul aplikasi web
 st.title("Analisis PESTEL untuk PT PLN")
