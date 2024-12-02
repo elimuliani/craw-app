@@ -7,7 +7,7 @@ def load_data():
     try:
         # Ganti dengan lokasi file CSV Anda
         data = pd.read_csv("pln_clean.csv", 
-                           names=["Title", "Date", "Link", "Content", "Category"],
+                           names=[headline, date, link, content_text, category],
                            encoding="utf-8")
         data["Date"] = pd.to_datetime(data["Date"])  # Konversi ke format datetime
         return data
